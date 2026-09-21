@@ -5,17 +5,11 @@ import SelectorCampo from "../components/form/SelectorCampo";
 import SubidaFoto from "../components/form/SubidaFoto";
 import BotonRegistro from "../components/form/BotonRegistro";
 import comerciales from "../../data/comerciales.json";
-
-export type RolUsuario = "admin" | "master" | "comercial";
+import type { Camper, FormularioCamper, Opcion, RolUsuario } from "../types/campers_types";
 
 interface RegistroCampersProps {
     rolUsuario?: RolUsuario;
     nombreUsuario?: string;
-}
-
-interface Opcion {
-    valor_opcion: string;
-    etiqueta_opcion: string;
 }
 
 const API_URL = "http://localhost:4000";
@@ -37,13 +31,13 @@ const OPCIONES_ESTADO: Opcion[] = [
     { valor_opcion: "agendado", etiqueta_opcion: "Agendado" },
 ];
 
-// Datos de referencia (solo lectura): se leen de data/comerciales.json
+// Comerciales desde data/comerciales.json
 const OPCIONES_COMERCIAL: Opcion[] = comerciales.map((c) => ({
     valor_opcion: c.nombre,
     etiqueta_opcion: c.nombre,
 }));
 
-const ESTADO_INICIAL = {
+const ESTADO_INICIAL: FormularioCamper = {
     nombre_completo: "",
     direccion_residencia: "",
     telefono: "",
@@ -61,10 +55,10 @@ export default function RegistroCampersPage({
 }: RegistroCampersProps) {
     const puedeAsignarComercial = rolUsuario === "admin" || rolUsuario === "master";
 
-    const [formulario, setFormulario] = useState(ESTADO_INICIAL);
+    const [formulario, setFormulario] = useState<FormularioCamper>(ESTADO_INICIAL);
     const [procesando, setProcesando] = useState(false);
 
-    const actualizar = (campo: string, valor: string) => {
+    const actualizar = (campo: keyof FormularioCamper, valor: string) => {
         setFormulario((prev) => ({ ...prev, [campo]: valor }));
     };
 
@@ -84,14 +78,14 @@ export default function RegistroCampersPage({
         try {
             const { observaciones, ...restoDatos } = formulario;
 
-            // Comercial: se asigna a sí mismo. Admin/Master: eligen en el selector.
+            // Comercial se autoasigna; admin/master eligen
             const comercialFinal =
                 rolUsuario === "comercial" ? nombreUsuario : formulario.comercial_asignado;
 
-            const leadAEnviar = {
+            const leadAEnviar: Camper = {
                 ...restoDatos,
                 comercial_asignado: comercialFinal,
-                // Solo se registra la observación si el usuario escribió algo
+                // Solo guarda la observación si hay texto
                 historial_observaciones: observaciones.trim()
                     ? [
                         {

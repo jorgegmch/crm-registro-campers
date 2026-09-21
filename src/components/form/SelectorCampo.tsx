@@ -1,9 +1,5 @@
 import styles from "../../styles/RegistroCampers.module.css";
-
-interface Opcion {
-    valor_opcion: string;
-    etiqueta_opcion: string;
-}
+import type { Opcion } from "../../types/campers_types";
 
 interface Props {
     id_campo: string;
