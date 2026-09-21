@@ -91,14 +91,17 @@ export default function RegistroCampersPage({
             const leadAEnviar = {
                 ...restoDatos,
                 comercial_asignado: comercialFinal,
-                historial_observaciones: [
-                    {
-                        id_evento: crypto.randomUUID(),
-                        fecha: new Date().toISOString(),
-                        autor: nombreUsuario,
-                        texto: observaciones,
-                    },
-                ],
+                // Solo se registra la observación si el usuario escribió algo
+                historial_observaciones: observaciones.trim()
+                    ? [
+                        {
+                            id_evento: crypto.randomUUID(),
+                            fecha: new Date().toISOString(),
+                            autor: nombreUsuario,
+                            texto: observaciones,
+                        },
+                    ]
+                    : [],
             };
 
             const respuesta = await fetch(`${API_URL}/campers`, {

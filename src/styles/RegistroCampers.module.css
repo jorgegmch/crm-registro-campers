@@ -51,6 +51,14 @@
     align-items: center;
     justify-content: center;
     overflow: hidden;
+    cursor: pointer;
+}
+
+.placeholder_texto {
+    color: #6b7280;
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-align: center;
 }
 
 .avatar_preview img {

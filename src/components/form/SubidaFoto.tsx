@@ -1,4 +1,3 @@
-"use client";
 import { useRef } from "react";
 import styles from "../../styles/RegistroCampers.module.css";
 
@@ -16,6 +15,7 @@ export default function SubidaFoto({ foto_actual, manejar_cambio_foto }: Props) 
 
     const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
+    e.target.value = ""; // permite volver a elegir el mismo archivo
     if (file) {
         const lector = new FileReader();
         lector.readAsDataURL(file);
@@ -72,9 +72,9 @@ export default function SubidaFoto({ foto_actual, manejar_cambio_foto }: Props) 
                     <img 
                         src={foto_actual} 
                         alt="Vista previa" 
-                        onError={(e) => {
-                            e.currentTarget.src = "https://via.placeholder.com/150";
+                        onError={() => {
                             console.error("Error cargando imagen.");
+                            manejar_cambio_foto("");
                         }}
                     />
                 ) : (

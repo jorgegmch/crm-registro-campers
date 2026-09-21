@@ -1,19 +1,18 @@
-import { useState } from "react";
 import styles from "../../styles/MainLayout.module.css";
 
 interface HeaderProps {
     usuario: { nombre: string; rol: string; avatar?: string };
+    alCambiarPerfil: () => void;
 }
 
-export default function Header({ usuario }: HeaderProps) {
-
-    const [abierto, setAbierto] = useState(false);
-
+export default function Header({ usuario, alCambiarPerfil }: HeaderProps) {
     return (
         <header className={styles.header}>
-            <div 
+            <button
+                type="button"
                 className={styles.perfil_usuario}
-                onClick={() => setAbierto(!abierto)}
+                onClick={alCambiarPerfil}
+                title="Clic para cambiar de perfil (demo)"
             >
                 {usuario.avatar ? (
                     <img 
@@ -34,16 +33,8 @@ export default function Header({ usuario }: HeaderProps) {
                     </span>
                 </div>
 
-                <span className={styles.flecha}>⌄</span>
-            </div>
-
-            {abierto && (
-                <div className={styles.dropdown_menu}>
-                    <a href="#">Perfil</a>
-                    <a href="#">Configuración</a>
-                    <a href="#">Cerrar sesión</a>
-                </div>
-            )}
+                <span className={styles.flecha}>⇄</span>
+            </button>
         </header>
     );
 }
