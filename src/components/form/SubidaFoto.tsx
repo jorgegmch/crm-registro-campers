@@ -15,7 +15,7 @@ export default function SubidaFoto({ foto_actual, manejar_cambio_foto }: Props) 
 
     const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
-    e.target.value = ""; // permite volver a elegir el mismo archivo
+    e.target.value = "";
     if (file) {
         const lector = new FileReader();
         lector.readAsDataURL(file);
@@ -25,14 +25,12 @@ export default function SubidaFoto({ foto_actual, manejar_cambio_foto }: Props) 
             img.src = event.target?.result as string;
 
             img.onload = () => {
-                // 1. Creamos un canvas para redimensionar
                 const canvas = document.createElement("canvas");
-                const MAX_WIDTH = 400; // Tamaño máximo de ancho
-                const MAX_HEIGHT = 400; // Tamaño máximo de alto
+                const MAX_WIDTH = 400;
+                const MAX_HEIGHT = 400;
                 let width = img.width;
                 let height = img.height;
 
-                // 2. Calculamos las nuevas proporciones
                 if (width > height) {
                     if (width > MAX_WIDTH) {
                         height *= MAX_WIDTH / width;
@@ -48,12 +46,13 @@ export default function SubidaFoto({ foto_actual, manejar_cambio_foto }: Props) 
                 canvas.width = width;
                 canvas.height = height;
 
-                // 3. Dibujamos la imagen optimizada
                 const ctx = canvas.getContext("2d");
+                if (ctx) {
+                    ctx.fillStyle = "#ffffff";
+                    ctx.fillRect(0, 0, width, height);
+                }
                 ctx?.drawImage(img, 0, 0, width, height);
 
-                // 4. Convertimos a Base64 con calidad reducida (0.7 es excelente balance)
-                // Usamos image/jpeg porque el base64 es mucho más corto que en PNG
                 const base64Optimizado = canvas.toDataURL("image/jpeg", 0.7);
                 
                 manejar_cambio_foto(base64Optimizado);
