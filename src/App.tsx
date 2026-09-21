@@ -2,19 +2,24 @@ import { useState } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import MainLayout from './components/layout/MainLayout';
 import RegistroCampersPage from './pages/RegistroCampersPage';
+import FueraDeAlcance from './pages/FueraDeAlcance';
 
 type PerfilDemo = "admin" | "comercial";
 
-// Perfiles de demostración. En el CRM original el rol llegaba desde el login (login.json);
-// aquí se alterna desde el Header para mostrar cómo cambia el formulario según el rol.
+// Perfiles de prueba, se alternan desde el Header
 const PERFILES_DEMO: Record<PerfilDemo, { nombre: string; rol: string }> = {
   admin: { nombre: "Admin", rol: "Administrador" },
   comercial: { nombre: "Carlos Ventas", rol: "Comercial" },
 };
 
-function Proximamente() {
-  return <div style={{ color: 'white' }}>Próximamente... (fuera del alcance de este módulo)</div>;
-}
+// Módulos del CRM que no están en este repo
+const MODULOS_EXTERNOS = [
+  { ruta: "/dashboard", nombre: "Dashboard" },
+  { ruta: "/consultar", nombre: "Consultar Campers" },
+  { ruta: "/contratos/lista", nombre: "Contratos" },
+  { ruta: "/facturacion", nombre: "Facturación" },
+  { ruta: "/recaudo", nombre: "Recaudo" },
+];
 
 export default function App() {
   const [perfil, setPerfil] = useState<PerfilDemo>("admin");
@@ -39,7 +44,10 @@ export default function App() {
               />
             }
           />
-          <Route path="*" element={<Proximamente />} />
+          {MODULOS_EXTERNOS.map(({ ruta, nombre }) => (
+            <Route key={ruta} path={ruta} element={<FueraDeAlcance nombre={nombre} />} />
+          ))}
+          <Route path="*" element={<Navigate to="/registro" replace />} />
         </Routes>
       </MainLayout>
     </Router>

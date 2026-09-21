@@ -1,0 +1,44 @@
+.contenedor {
+    max-width: 560px;
+    padding: 48px 40px;
+    text-align: center;
+    background-color: #273142;
+    border-radius: 18px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.35);
+}
+
+.etiqueta {
+    padding: 4px 12px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: #a5b4fc;
+    background-color: rgba(112, 92, 246, 0.2);
+    border-radius: 999px;
+}
+
+.titulo {
+    margin: 16px 0 12px;
+    font-size: 1.6rem;
+    font-weight: 700;
+    color: white;
+}
+
+.descripcion {
+    font-size: 0.95rem;
+    line-height: 1.5;
+    color: #94a3b8;
+}
+
+.enlace {
+    display: inline-block;
+    margin-top: 20px;
+    font-size: 0.9rem;
+    color: #38bdf8;
+    text-decoration: none;
+}
+
+.enlace:hover {
+    text-decoration: underline;
+}
