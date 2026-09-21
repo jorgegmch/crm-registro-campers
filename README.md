@@ -1,73 +1,142 @@
-<!-- # React + TypeScript + Vite
+# CRM Camper Registration Module
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Camper registration module for a team-built commercial CRM MVP, running standalone with React, TypeScript and JSON Server.
 
-Currently, two official plugins are available:
+Built as part of a Scrum team of six developing the Campuslands Tools CRM MVP (user story HU-2.1). The full CRM is private and was never deployed to production. This repository contains only my module, with fictional data. The layout, the profile switch in the header and the "out of scope" pages are demo scaffolding so the module can run on its own.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+---
 
-## React Compiler
+## Features
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+- Registration form: name, address, phone, email, schedule, status, notes and profile photo
+- Role-based behavior: Admin and Master must pick the camper's sales rep from a list; Comercial is assigned automatically to themselves
+- Required-field validation for the name and, for Admin/Master, the sales rep
+- Photo upload resized to fit 400×400 px and stored as base64 JPEG on a white background, so transparent PNGs don't turn black
+- Observation history: a note is saved with an id, timestamp and author, only when text is entered
+- Profile switch in the header to toggle between Admin and Comercial in the demo
 
-## Expanding the ESLint configuration
+---
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+## Tech stack
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+- React 19, TypeScript 5.9 (strict mode) and Vite 7
+- React Router 7
+- CSS Modules
+- JSON Server: local REST API over `data/campers.json`
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+---
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+## Setup instructions
+
+Requires Node.js 22.12 or newer (a JSON Server 1.0 requirement).
+
+1. Clone the repo and install dependencies:
+
+```
+git clone https://github.com/jorgegmch/crm-registro-campers.git
+cd crm-registro-campers
+npm install
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+2. Start the API and the app in two terminals:
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+```
+npm run api   # JSON Server on http://localhost:4000
+npm run dev   # App on http://localhost:5173
+```
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-``` -->
+Other scripts: `npm run build` (type-check and build), `npm run lint`, `npm run preview`.
+
+---
+
+## Usage
+
+- Open `http://localhost:5173`. The form starts as Admin.
+- Fill in the fields, choose a sales rep and press **Completar Registro**.
+- Click the profile in the header to switch to Comercial: the sales rep selector disappears and the camper is assigned to Carlos Ventas.
+- Registered campers are saved in `data/campers.json` and listed at `http://localhost:4000/campers`. To reset the demo data, run `git restore data/campers.json`.
+- The other sidebar entries (Dashboard, Consultar, Contratos, Facturación, Recaudo) belong to other CRM modules and show an "out of scope" notice.
+
+---
+
+## Screenshots
+
+**Admin: the sales rep selector is required**
+
+![Registration form as Admin](docs/admin-view.png)
+
+**Comercial: assigned automatically, no selector**
+
+![Registration form as Comercial](docs/comercial-view.png)
+
+**Modules outside this repository**
+
+![Out of scope notice](docs/out-of-scope.png)
+
+---
+
+## Project structure
+
+```
+crm-registro-campers
+├── data/
+│   ├── campers.json
+│   └── comerciales.json
+├── docs/
+│   ├── admin-view.png
+│   ├── comercial-view.png
+│   └── out-of-scope.png
+├── src/
+│   ├── components/
+│   │   ├── form/
+│   │   │   ├── BotonRegistro.tsx
+│   │   │   ├── InputCampo.tsx
+│   │   │   ├── SelectorCampo.tsx
+│   │   │   └── SubidaFoto.tsx
+│   │   └── layout/
+│   │       ├── Header.tsx
+│   │       ├── MainLayout.tsx
+│   │       └── Sidebar.tsx
+│   ├── pages/
+│   │   ├── FueraDeAlcance.tsx
+│   │   └── RegistroCampersPage.tsx
+│   ├── styles/
+│   │   ├── FueraDeAlcance.module.css
+│   │   ├── MainLayout.module.css
+│   │   └── RegistroCampers.module.css
+│   ├── types/
+│   │   └── campers_types.ts
+│   ├── App.tsx
+│   ├── index.css
+│   └── main.tsx
+├── .gitattributes
+├── .gitignore
+├── eslint.config.js
+├── index.html
+├── package-lock.json
+├── package.json
+├── README.md
+├── tsconfig.app.json
+├── tsconfig.json
+├── tsconfig.node.json
+└── vite.config.ts
+```
+
+---
+
+## Limitations
+
+- Data is stored in a JSON file by design: the original MVP had no database. JSON Server rewrites the whole file on every write, so it is not suited to concurrent use.
+- Photos are stored as base64 inside that file. Fine for a demo, not for production.
+- There is no authentication. Roles are simulated with the header switch; in the full CRM the role came from the login and the sales reps from the users API.
+- There are no automated tests.
+
+---
+
+## License
+
+Copyright (c) 2026 Jorge Gomez. All rights reserved.
+
+This repository is published for portfolio review. The code may not be copied, modified or redistributed without permission.
+
+Built by [Jorge Gomez](https://github.com/jorgegmch) for the Campuslands Tools CRM.
