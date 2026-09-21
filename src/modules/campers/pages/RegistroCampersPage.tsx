@@ -1,9 +1,10 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import styles from "../styles/RegistroCampers.module.css";
 import InputCampo from "../components/InputCampo";
 import SelectorCampo from "../components/SelectorCampo";
 import SubidaFoto from "../components/SubidaFoto";
 import BotonRegistro from "../components/BotonRegistro";
+import comerciales from "../../../../data/comerciales.json";
 
 export type RolUsuario = "admin" | "master" | "comercial";
 
@@ -36,6 +37,12 @@ const OPCIONES_ESTADO: Opcion[] = [
     { valor_opcion: "agendado", etiqueta_opcion: "Agendado" },
 ];
 
+// Datos de referencia (solo lectura): se leen de data/comerciales.json
+const OPCIONES_COMERCIAL: Opcion[] = comerciales.map((c) => ({
+    valor_opcion: c.nombre,
+    etiqueta_opcion: c.nombre,
+}));
+
 const ESTADO_INICIAL = {
     nombre_completo: "",
     direccion_residencia: "",
@@ -56,26 +63,6 @@ export default function RegistroCampersPage({
 
     const [formulario, setFormulario] = useState(ESTADO_INICIAL);
     const [procesando, setProcesando] = useState(false);
-    const [comercialesDisponibles, setComercialesDisponibles] = useState<Opcion[]>([]);
-
-    useEffect(() => {
-        if (!puedeAsignarComercial) return;
-
-        const cargarComerciales = async () => {
-            try {
-                const respuesta = await fetch(`${API_URL}/comerciales`);
-                if (!respuesta.ok) throw new Error("No se pudieron cargar los comerciales");
-
-                const datos: { nombre: string }[] = await respuesta.json();
-                setComercialesDisponibles(
-                    datos.map((c) => ({ valor_opcion: c.nombre, etiqueta_opcion: c.nombre }))
-                );
-            } catch (error) {
-                console.error("Error cargando comerciales:", error);
-            }
-        };
-        cargarComerciales();
-    }, [puedeAsignarComercial]);
 
     const actualizar = (campo: string, valor: string) => {
         setFormulario((prev) => ({ ...prev, [campo]: valor }));
@@ -156,7 +143,7 @@ export default function RegistroCampersPage({
                                 id_campo="asignacion"
                                 etiqueta_campo="Asignar a un Comercial (Obligatorio)"
                                 valor_seleccionado={formulario.comercial_asignado}
-                                opciones_disponibles={comercialesDisponibles}
+                                opciones_disponibles={OPCIONES_COMERCIAL}
                                 manejar_cambio={(v) => actualizar("comercial_asignado", v)}
                             />
                         </div>
