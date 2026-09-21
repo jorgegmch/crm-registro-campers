@@ -1,7 +1,7 @@
 import { type ReactNode } from "react";
 import Sidebar from "./Sidebar";
 import Header from "./Header";
-import styles from "../styles/MainLayout.module.css";
+import styles from "../../styles/MainLayout.module.css";
 
 export default function MainLayout({ children }: { children: ReactNode }) {
     const usuarioSimulado = { nombre: "Admin", rol: "Administrador" };

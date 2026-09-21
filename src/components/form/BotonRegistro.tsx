@@ -1,4 +1,4 @@
-import styles from "../styles/RegistroCampers.module.css";
+import styles from "../../styles/RegistroCampers.module.css";
 
 interface Props {
     etiqueta_boton: string;

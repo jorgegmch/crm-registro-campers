@@ -1,5 +1,5 @@
 import { useState } from "react";
-import styles from "../styles/MainLayout.module.css";
+import styles from "../../styles/MainLayout.module.css";
 
 interface HeaderProps {
     usuario: { nombre: string; rol: string; avatar?: string };

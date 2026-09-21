@@ -1,6 +1,6 @@
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
-import MainLayout from './modules/campers/components/MainLayout';
-import RegistroCampersPage from './modules/campers/pages/RegistroCampersPage';
+import MainLayout from './components/layout/MainLayout';
+import RegistroCampersPage from './pages/RegistroCampersPage';
 
 export default function App() {
   return (

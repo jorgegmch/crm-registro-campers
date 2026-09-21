@@ -1,10 +1,10 @@
 import { useState } from "react";
 import styles from "../styles/RegistroCampers.module.css";
-import InputCampo from "../components/InputCampo";
-import SelectorCampo from "../components/SelectorCampo";
-import SubidaFoto from "../components/SubidaFoto";
-import BotonRegistro from "../components/BotonRegistro";
-import comerciales from "../../../../data/comerciales.json";
+import InputCampo from "../components/form/InputCampo";
+import SelectorCampo from "../components/form/SelectorCampo";
+import SubidaFoto from "../components/form/SubidaFoto";
+import BotonRegistro from "../components/form/BotonRegistro";
+import comerciales from "../../data/comerciales.json";
 
 export type RolUsuario = "admin" | "master" | "comercial";
 
